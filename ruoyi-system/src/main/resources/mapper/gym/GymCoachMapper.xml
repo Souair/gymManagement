@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.gym.mapper.GymCoachMapper">
+
+    
+    <resultMap type="GymCoach" id="GymCoachResult">
+        <result property="coachId"    column="coach_id"    />
+        <result property="coachNo"    column="coach_no"    />
+        <result property="name"    column="name"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="phone"    column="phone"    />
+        <result property="height"    column="height"    />
+        <result property="weight"    column="weight"    />
+        <result property="specialty"    column="specialty"    />
+        <result property="entryDate"    column="entry_date"    />
+        <result property="resignDate"    column="resign_date"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <select id="selectCoachBySpecialty" resultMap="GymCoachResult">
+        <include refid="selectGymCoachVo"/>
+        where status = '1'
+        AND specialty like concat('%', #{specialty}, '%')
+    </select>
+
+    <sql id="selectGymCoachVo">
+        select coach_id, coach_no, name, avatar, gender, age, phone, height, weight, specialty, entry_date, resign_date, status, del_flag, create_by, create_time, update_by, update_time, remark from gym_coach
+    </sql>
+
+    <select id="selectGymCoachList" parameterType="GymCoach" resultMap="GymCoachResult">
+        <include refid="selectGymCoachVo"/>
+        <where>  
+            <if test="coachNo != null  and coachNo != ''"> and coach_no = #{coachNo}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="specialty != null  and specialty != ''"> and specialty = #{specialty}</if>
+            <if test="entryDate != null "> and entry_date = #{entryDate}</if>
+            <if test="resignDate != null "> and resign_date = #{resignDate}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectGymCoachByCoachId" parameterType="Long" resultMap="GymCoachResult">
+        <include refid="selectGymCoachVo"/>
+        where coach_id = #{coachId}
+    </select>
+
+    <insert id="insertGymCoach" parameterType="GymCoach" useGeneratedKeys="true" keyProperty="coachId">
+        insert into gym_coach
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coachNo != null">coach_no,</if>
+            <if test="name != null">name,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="phone != null">phone,</if>
+            <if test="height != null">height,</if>
+            <if test="weight != null">weight,</if>
+            <if test="specialty != null">specialty,</if>
+            <if test="entryDate != null">entry_date,</if>
+            <if test="resignDate != null">resign_date,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coachNo != null">#{coachNo},</if>
+            <if test="name != null">#{name},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="height != null">#{height},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="specialty != null">#{specialty},</if>
+            <if test="entryDate != null">#{entryDate},</if>
+            <if test="resignDate != null">#{resignDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGymCoach" parameterType="GymCoach">
+        update gym_coach
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coachNo != null">coach_no = #{coachNo},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="specialty != null">specialty = #{specialty},</if>
+            <if test="entryDate != null">entry_date = #{entryDate},</if>
+            <if test="resignDate != null">resign_date = #{resignDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where coach_id = #{coachId}
+    </update>
+
+    <delete id="deleteGymCoachByCoachId" parameterType="Long">
+        delete from gym_coach where coach_id = #{coachId}
+    </delete>
+
+    <delete id="deleteGymCoachByCoachIds" parameterType="String">
+        delete from gym_coach where coach_id in 
+        <foreach item="coachId" collection="array" open="(" separator="," close=")">
+            #{coachId}
+        </foreach>
+    </delete>
+</mapper>

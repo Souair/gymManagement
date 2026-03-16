@@ -4,6 +4,10 @@
     mode="horizontal"
     @select="handleSelect"
   >
+    <el-menu-item index="/index" @click="$router.push('/')">
+      <svg-icon icon-class="dashboard" />
+      <span slot="title">首页</span>
+    </el-menu-item>
     <template v-for="(item, index) in topMenus">
       <el-menu-item :style="{'--theme': theme}" :index="item.path" :key="index" v-if="index < visibleNumber">
         <svg-icon
@@ -94,6 +98,9 @@ export default {
     activeMenu() {
       const path = this.$route.path
       let activePath = path
+      if (path === '/' || path === '/index') {
+        return '/index';
+      }
       if (path !== undefined && path.lastIndexOf("/") > 0 && hideList.indexOf(path) === -1) {
         const tmpPath = path.substring(1, path.length)
         if (!this.$route.meta.link) {

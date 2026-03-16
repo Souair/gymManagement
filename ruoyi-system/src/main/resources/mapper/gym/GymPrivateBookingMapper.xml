@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.gym.mapper.GymPrivateBookingMapper">
+    
+    <resultMap type="GymPrivateBooking" id="GymPrivateBookingResult">
+        <result property="id"    column="id"    />
+        <result property="coachId"    column="coach_id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="bookingType"    column="booking_type"    />
+        <result property="bookingDate"    column="booking_date"    />
+        <result property="duration"    column="duration"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectGymPrivateBookingVo">
+        select id, coach_id, member_id, booking_type, booking_date, duration, status, del_flag, create_by, create_time, update_by, update_time, remark from gym_private_booking
+    </sql>
+
+    <select id="selectGymPrivateBookingList" parameterType="GymPrivateBooking" resultMap="GymPrivateBookingResult">
+        <include refid="selectGymPrivateBookingVo"/>
+        <where>  
+            <if test="coachId != null "> and coach_id = #{coachId}</if>
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="bookingType != null  and bookingType != ''"> and booking_type = #{bookingType}</if>
+            <if test="bookingDate != null "> and booking_date = #{bookingDate}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectGymPrivateBookingById" parameterType="Long" resultMap="GymPrivateBookingResult">
+        <include refid="selectGymPrivateBookingVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectCountGroupByBookingType" resultType="java.util.Map">
+        SELECT booking_type as name, COUNT(*) as value
+        FROM gym_private_booking
+        GROUP BY booking_type
+    </select>
+
+    <select id="selectBookingTrendLast7Days" resultType="java.util.Map">
+        SELECT DATE_FORMAT(booking_date, '%Y-%m-%d') as date, COUNT(*) as count
+        FROM gym_private_booking
+        WHERE booking_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        GROUP BY date
+        ORDER BY date ASC
+    </select>
+
+    <insert id="insertGymPrivateBooking" parameterType="GymPrivateBooking">
+        insert into gym_private_booking
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="coachId != null">coach_id,</if>
+            <if test="memberId != null">member_id,</if>
+            <if test="bookingType != null">booking_type,</if>
+            <if test="bookingDate != null">booking_date,</if>
+            <if test="duration != null">duration,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="coachId != null">#{coachId},</if>
+            <if test="memberId != null">#{memberId},</if>
+            <if test="bookingType != null">#{bookingType},</if>
+            <if test="bookingDate != null">#{bookingDate},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGymPrivateBooking" parameterType="GymPrivateBooking">
+        update gym_private_booking
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coachId != null">coach_id = #{coachId},</if>
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="bookingType != null">booking_type = #{bookingType},</if>
+            <if test="bookingDate != null">booking_date = #{bookingDate},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGymPrivateBookingById" parameterType="Long">
+        delete from gym_private_booking where id = #{id}
+    </delete>
+
+    <delete id="deleteGymPrivateBookingByIds" parameterType="String">
+        delete from gym_private_booking where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

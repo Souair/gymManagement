@@ -1,22 +1,19 @@
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
+  <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 v-else class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+        <h1 v-else class="sidebar-title">{{ title }} </h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+        <h1 class="sidebar-title">{{ title }} </h1>
       </router-link>
     </transition>
   </div>
 </template>
 
 <script>
-import logoImg from '@/assets/logo/logo.png'
-import variables from '@/assets/styles/variables.scss'
-
 export default {
   name: 'SidebarLogo',
   props: {
@@ -25,18 +22,11 @@ export default {
       required: true
     }
   },
-  computed: {
-    variables() {
-      return variables
-    },
-    sideTheme() {
-      return this.$store.state.settings.sideTheme
-    }
-  },
   data() {
     return {
-      title: process.env.VUE_APP_TITLE,
-      logo: logoImg
+      // 保持你的长标题
+      title: '智能健身房管理与预约系统',
+      logo: require('@/assets/logo/logo.png')
     }
   }
 }
@@ -66,10 +56,12 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      // 1. 把 Logo 图片调小一点 (原 32px -> 24px)
+      width: 24px;
+      height: 24px;
       vertical-align: middle;
-      margin-right: 12px;
+      // 2. 减小 Logo 和文字的间距 (原 12px -> 5px)
+      margin-right: 5px;
     }
 
     & .sidebar-title {
@@ -78,9 +70,12 @@ export default {
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      // 3. 关键：把字体调小 (原 14px -> 12px，甚至 11px)
+      font-size: 12px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
+      // 4. 稍微压缩一点字间距 (可选)
+      letter-spacing: -0.5px;
     }
   }
 
